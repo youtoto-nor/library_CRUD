@@ -1,0 +1,18 @@
+.book-form {
+    padding: 20px;
+}
+
+.book-form form {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.book-form input {
+    display: block;
+    margin-top: 5px;
+}
+
+.book-form button {
+    width: fit-content;
+}
