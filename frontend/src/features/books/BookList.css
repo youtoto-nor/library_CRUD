@@ -1,0 +1,9 @@
+.book-list {
+    padding: 20px;
+}
+
+.book-item {
+    margin-bottom: 20px;
+    padding: 15px;
+    border: 1px solid #ddd;
+}
