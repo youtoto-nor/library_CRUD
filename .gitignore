@@ -1,21 +1,44 @@
-.gradle
-**/build/
-!**/src/**/build/
+# =========================
+# Backend - Java / Gradle
+# =========================
 
-# Ignore Gradle GUI config
-gradle-app.setting
+backend/build/
+backend/.gradle/
+backend/out/
 
-# Avoid ignoring Gradle wrapper jar file (.jar files are usually ignored)
-!gradle-wrapper.jar
+# IntelliJ
+backend/.idea/
+backend/*.iml
 
-# Avoid ignore Gradle wrappper properties
-!gradle-wrapper.properties
+# Eclipse
+backend/.classpath
+backend/.project
+backend/.settings/
 
-# Cache of project
-.gradletasknamecache
 
-# Eclipse Gradle plugin generated files
-# Eclipse Core
-.project
-# JDT-specific (Eclipse Java Development Tools)
-.classpath
+# =========================
+# Frontend - Node / Vite
+# =========================
+
+frontend/node_modules/
+frontend/dist/
+
+# Vite local environment files
+frontend/.env
+frontend/.env.local
+frontend/.env.*.local
+
+
+# =========================
+# VS Code
+# =========================
+
+.vscode/
+
+
+# =========================
+# OS
+# =========================
+
+.DS_Store
+Thumbs.db
