@@ -54,41 +54,43 @@
     return (
         <div className="book-form">
         
-        <h1>도서 등록</h1>
-        <form onSubmit={handleSubmit}>
-            
-            <div>
-            
-            <label>제목</label>
-            <input
-                type="text"
-                name="title"
-                value={book.title}
-                onChange={handleChange}
-            />
-            </div>
-            <div>
-            
-            <label>저자</label>
-            <input
-                type="text"
-                name="author"
-                value={book.author}
-                onChange={handleChange}
-            />
-            </div>
-            <div>
-            
-            <label>ISBN</label>
-            <input
-                type="text"
-                name="isbn"
-                value={book.isbn}
-                onChange={handleChange}
-            />
-            </div>
-            <button type="submit"> 등록 </button>
-        </form>
+            <h1>{id ? '도서 수정' : '도서 등록'}</h1>
+            <form onSubmit={handleSubmit}>
+                
+                <div>
+                
+                <label>제목</label>
+                <input
+                    type="text"
+                    name="title"
+                    value={book.title}
+                    onChange={handleChange}
+                />
+                </div>
+                <div>
+                
+                <label>저자</label>
+                <input
+                    type="text"
+                    name="author"
+                    value={book.author}
+                    onChange={handleChange}
+                />
+                </div>
+                <div>
+                
+                <label>ISBN</label>
+                <input
+                    type="text"
+                    name="isbn"
+                    value={book.isbn}
+                    onChange={handleChange}
+                />
+                </div>
+                <button type="submit">
+                {id ? '수정' : '등록'}
+                </button>
+            </form>
         </div>
     );
     }
