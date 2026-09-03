@@ -1,21 +1,54 @@
-    import { useState } from "react";
-    import { createBook } from "./bookApi";
+    import { useEffect, useState } from "react";
+    import { useNavigate, useParams } from 'react-router-dom';
+    import { createBook, getBook, updateBook } from "./bookApi";
     import "./BookForm.css";
     function BookForm() {
-    const [book, setBook] = useState({ title: "", author: "", isbn: "" });
+
+    const [book, setBook] = useState({
+        title: '',
+        author: '',
+        isbn: ''
+    });
+    const navigate = useNavigate();
+    const { id } = useParams();
+    useEffect(() => {
+    if (id) {
+        getBook(id)
+            .then(response => {
+                setBook(response.data);
+            })
+            .catch(() => {
+                alert('도서 정보를 불러오지 못했습니다.');
+            });
+    }
+}, [id]);
+
     const handleChange = (event) => {
         const { name, value } = event.target;
-        setBook({ ...book, [name]: value });
+
+        setBook({ 
+            ...book,
+            [name]: value
+        });
     };
+
     const handleSubmit = (event) => {
         event.preventDefault();
-        createBook(book)
+
+        const request = id
+        ? updateBook(id, book)
+        : createBook(book);
+
+
+        request
         .then(() => {
-            alert("도서가 등록되었습니다.");
-            setBook({ title: "", author: "", isbn: "" });
+            alert(id ? '도서가 수정되었습니다.' : '도서가 등록되었습니다.');
+
+            navigate('/books');
         })
+
         .catch(() => {
-            alert("도서 등록에 실패했습니다.");
+            alert(id ? '도서 수정에 실패했습니다.' : '도서 등록에 실패했습니다.');
         });
     };
     return (

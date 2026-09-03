@@ -1,11 +1,22 @@
 import { useEffect, useState } from "react";
-import { getBooks } from "./bookApi";
+import { Link } from 'react-router-dom';
+import { getBooks, deleteBook } from "./bookApi";
 import "./BookList.css";
 
 function BookList() {
     const [books, setBooks] = useState([]);
     const [status, setStatus] = useState("idle");
+    const handleDelete = (id) => {
+    deleteBook(id)
+        .then(() => {
+            alert('도서가 삭제되었습니다.');
 
+            setBooks(books.filter(book => book.id !== id));
+        })
+        .catch(() => {
+            alert('도서 삭제에 실패했습니다.');
+        });
+    };
     useEffect(() => {
         setStatus("loading");
 
@@ -37,6 +48,15 @@ function BookList() {
                 <p>제목: {book.title}</p>
                 <p>저자: {book.author}</p>
                 <p>ISBN: {book.isbn}</p>
+
+
+                <Link to={`/books/${book.id}/edit`}>
+                    수정
+                </Link>
+
+                <button onClick={() => handleDelete(book.id)}>
+                    삭제
+                </button>
             </div>
             ))}
         </div>
