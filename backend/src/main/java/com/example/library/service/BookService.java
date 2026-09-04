@@ -1,33 +1,36 @@
 package com.example.library.service;
-
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import com.example.library.dto.BookRequest;
 import com.example.library.entity.Book;
 import com.example.library.repository.BookRepository;
 import org.springframework.stereotype.Service;
-
-import java.util.List;
 
 @Service
 public class BookService {
 
     private final BookRepository bookRepository;
 
-    public BookService(BookRepository bookRepository){
-    this.bookRepository = bookRepository;
+    public BookService(BookRepository bookRepository) {
+        this.bookRepository = bookRepository;
     }
 
     public Book createBook(BookRequest request) {
-    Book book = new Book();
+        Book book = new Book();
 
-      book.setTitle(request.getTitle());
-      book.setAuthor(request.getAuthor());
-      book.setIsbn(request.getIsbn());
+        book.setTitle(request.getTitle());
+        book.setAuthors(request.getAuthors());
+        book.setIsbn(request.getIsbn());
+        book.setPrice(request.getPrice());
+        book.setPublisher(request.getPublisher());
+        book.setSalePrice(request.getSalePrice());
+        book.setThumbnail(request.getThumbnail());
 
         return bookRepository.save(book);
     }
 
-    public List<Book> getBooks() {
-        return bookRepository.findAll();
+    public Page<Book> getBooks(Pageable pageable) {
+        return bookRepository.findAll(pageable);
     }
 
     public Book getBook(Long id) {
@@ -41,8 +44,12 @@ public class BookService {
                 .orElseThrow();
 
         book.setTitle(request.getTitle());
-        book.setAuthor(request.getAuthor());
+        book.setAuthors(request.getAuthors());
         book.setIsbn(request.getIsbn());
+        book.setPrice(request.getPrice());
+        book.setPublisher(request.getPublisher());
+        book.setSalePrice(request.getSalePrice());
+        book.setThumbnail(request.getThumbnail());
 
         return bookRepository.save(book);
     }
