@@ -26,6 +26,7 @@ function BookList() {
                 setStatus("success");
             })
             .catch(() => {
+                console.error(error);
                 setStatus("error");
             });
     }, []);
