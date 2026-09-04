@@ -1,13 +1,17 @@
-    import { useEffect, useState } from "react";
-    import { useNavigate, useParams } from 'react-router-dom';
-    import { createBook, getBook, updateBook } from "./bookApi";
-    import "./BookForm.css";
-    function BookForm() {
+import { useEffect, useState } from "react";
+import { useNavigate, useParams } from 'react-router-dom';
+import { createBook, getBook, updateBook } from "./bookApi";
+import "./BookForm.css";
+function BookForm() {
 
     const [book, setBook] = useState({
         title: '',
-        author: '',
-        isbn: ''
+        authors: '',
+        isbn: '',
+        price: '',
+        publisher: '',
+        salePrice: '',
+        thumbnail: ''
     });
     const navigate = useNavigate();
     const { id } = useParams();
@@ -51,47 +55,86 @@
             alert(id ? '도서 수정에 실패했습니다.' : '도서 등록에 실패했습니다.');
         });
     };
-    return (
-        <div className="book-form">
-        
-            <h1>{id ? '도서 수정' : '도서 등록'}</h1>
-            <form onSubmit={handleSubmit}>
-                
-                <div>
-                
-                <label>제목</label>
+return (
+    <div className="book-form">
+    
+        <h1>{id ? '도서 수정' : '도서 등록'}</h1>
+        <form onSubmit={handleSubmit}>
+            
+            <div>
+            
+            <label>제목</label>
+            <input
+                type="text"
+                name="title"
+                value={book.title}
+                onChange={handleChange}
+            />
+            </div>
+            <div>
+            
+            <label>저자</label>
+            <input
+                type="text"
+                name="authors"
+                value={book.authors}
+                onChange={handleChange}
+            />
+            </div>
+            <div>
+            
+            <label>ISBN</label>
+            <input
+                type="text"
+                name="isbn"
+                value={book.isbn}
+                onChange={handleChange}
+            />
+            </div>
+            <div>
+            <label>출판사</label>
+            <input
+                type="text"
+                name="publisher"
+                value={book.publisher}
+                onChange={handleChange}
+            />
+            </div>
+
+            <div>
+                <label>정가</label>
                 <input
-                    type="text"
-                    name="title"
-                    value={book.title}
+                    type="number"
+                    name="price"
+                    value={book.price}
                     onChange={handleChange}
                 />
-                </div>
-                <div>
-                
-                <label>저자</label>
+            </div>
+
+            <div>
+                <label>판매가</label>
                 <input
-                    type="text"
-                    name="author"
-                    value={book.author}
+                    type="number"
+                    name="salePrice"
+                    value={book.salePrice}
                     onChange={handleChange}
                 />
-                </div>
-                <div>
-                
-                <label>ISBN</label>
+            </div>
+
+            <div>
+                <label>썸네일 URL</label>
                 <input
                     type="text"
-                    name="isbn"
-                    value={book.isbn}
+                    name="thumbnail"
+                    value={book.thumbnail}
                     onChange={handleChange}
                 />
-                </div>
+            </div>
                 <button type="submit">
                 {id ? '수정' : '등록'}
                 </button>
             </form>
         </div>
     );
-    }
-    export default BookForm;
+}
+export default BookForm;

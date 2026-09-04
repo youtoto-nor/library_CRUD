@@ -48,6 +48,9 @@ function BookList() {
             <div className="book-item" key={book.id}>
                 <p>제목: {book.title}</p>
                 <p>저자: {book.authors}</p>
+                <p>출판사: {book.publisher}</p>
+                <p>정가: {book.price}</p>
+                <p>판매가: {book.salePrice}</p>
                 <p>ISBN: {book.isbn}</p>
 
 
