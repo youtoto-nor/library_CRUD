@@ -22,7 +22,7 @@ function BookList() {
 
         getBooks()
             .then((response) => {
-                setBooks(response.data);
+                setBooks(response.data.content);
                 setStatus("success");
             })
             .catch(() => {
