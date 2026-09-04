@@ -47,7 +47,7 @@ function BookList() {
             {books.map((book) => (
             <div className="book-item" key={book.id}>
                 <p>제목: {book.title}</p>
-                <p>저자: {book.author}</p>
+                <p>저자: {book.authors}</p>
                 <p>ISBN: {book.isbn}</p>
 
 
