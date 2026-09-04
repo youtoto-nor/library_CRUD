@@ -1,12 +1,15 @@
 package com.example.library.entity;
-import jakarta.persistence.*;
+
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
 import lombok.Getter;
 import lombok.Setter;
 
 @Entity
 @Getter
 @Setter
-@Table(name = "books")
 public class Book {
 
     @Id
@@ -14,7 +17,10 @@ public class Book {
     private Long id;
 
     private String title;
-    private String author;
+    private String authors;
     private String isbn;
-
+    private Integer price;
+    private String publisher;
+    private Integer salePrice;
+    private String thumbnail;
 }
