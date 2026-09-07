@@ -8,19 +8,23 @@ function BookList() {
     const [status, setStatus] = useState("idle");
     const [page, setPage] = useState(0);
     const [totalPages, setTotalPages] = useState(0);
+    const [keyword, setKeyword] = useState('');
+    const [searchKeyword, setSearchKeyword] = useState('');
     const handleDelete = (id) => {
     deleteBook(id)
         .then(() => {
             alert('도서가 삭제되었습니다.');
 
             // 현재 페이지를 다시 조회
-            getBooks(page, 20)
+            getBooks(page, 20, searchKeyword)
                 .then((response) => {
                     setBooks(response.data.content);
                     setTotalPages(response.data.totalPages);
 
                     // 현재 페이지가 사라진 경우 마지막 페이지로 이동
                     if (page >= response.data.totalPages) {
+                        setPage(0);
+                    } else if (page >= response.data.totalPages) {
                         setPage(response.data.totalPages - 1);
                     }
                 })
@@ -35,7 +39,7 @@ function BookList() {
     useEffect(() => {
         setStatus("loading");
 
-        getBooks(page, 20)
+        getBooks(page, 20, searchKeyword)
             .then((response) => {
                 setBooks(response.data.content);
                 setTotalPages(response.data.totalPages);
@@ -45,7 +49,7 @@ function BookList() {
                 console.error(error);
                 setStatus("error");
             });
-    }, [page]);
+    }, [page, searchKeyword]);
 
     if (status === "loading") {
         return <p>도서 목록을 불러오는 중...</p>;
@@ -62,7 +66,29 @@ function BookList() {
             <div className="book-list">
             
             <h1>도서 목록</h1>
+            <div className="search-box">
+                <input
+                    type="text"
+                    value={keyword}
+                    onChange={(e) => setKeyword(e.target.value)}
+                    placeholder="도서 제목 또는 저자 검색"
+                onKeyDown={(e) => {
+                        if (e.key === 'Enter') {
+                            setSearchKeyword(keyword);
+                            setPage(0);
+                        }
+                    }}
+                />
 
+                <button
+                    onClick={() => {
+                        setSearchKeyword(keyword);
+                        setPage(0);
+                    }}
+                >
+                    검색
+                </button>
+            </div>
             {books.map((book) => (
             <div className="book-item" key={book.id}>
                 <p>제목: {book.title}</p>
@@ -71,7 +97,12 @@ function BookList() {
                 <p>정가: {book.price}</p>
                 <p>판매가: {book.salePrice}</p>
                 <p>ISBN: {book.isbn}</p>
-
+                {book.thumbnail && (
+                    <img
+                        src={book.thumbnail}
+                        alt={book.title}
+                        />
+                )}
 
                 <Link to={`/books/${book.id}/edit`}>
                     수정
@@ -82,6 +113,15 @@ function BookList() {
                 </button>
             </div>
             ))}
+            {books.length === 0 ? (
+                <p>검색 결과가 없습니다.</p>
+            ) : (
+                books.map((book) => (
+                    <div className="book-item" key={book.id}>
+                        ...
+                    </div>
+                ))
+            )}
             <div className="pagination">
 
                 <button
