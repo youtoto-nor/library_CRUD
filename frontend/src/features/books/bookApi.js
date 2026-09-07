@@ -2,11 +2,12 @@ import axios from 'axios';
 
 const API_URL = 'http://localhost:8080/books';
 
-export const getBooks = (page = 0, size = 20) => {
+export const getBooks = (page = 0, size = 20, keyword = '') => {
     return axios.get(API_URL, {
         params: {
             page,
-            size
+            size,
+            keyword
         }
     });
 };
