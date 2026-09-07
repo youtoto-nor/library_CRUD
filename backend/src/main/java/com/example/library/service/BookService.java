@@ -1,9 +1,11 @@
 package com.example.library.service;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import com.example.library.dto.BookRequest;
 import com.example.library.entity.Book;
 import com.example.library.repository.BookRepository;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -30,6 +32,14 @@ public class BookService {
     }
 
     public Page<Book> getBooks(Pageable pageable) {
+        if (pageable.getSort().isUnsorted()) {
+            pageable = PageRequest.of(
+                    pageable.getPageNumber(),
+                    pageable.getPageSize(),
+                    Sort.by(Sort.Direction.ASC, "id")
+            );
+        }
+
         return bookRepository.findAll(pageable);
     }
 
