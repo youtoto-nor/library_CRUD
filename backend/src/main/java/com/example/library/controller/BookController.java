@@ -17,10 +17,14 @@ public class BookController {
     public BookController(BookService bookService) {
         this.bookService = bookService;
     }
+
     @GetMapping("/books")
-    public Page<Book> getBooks(Pageable pageable) {
-        return bookService.getBooks(pageable);
-    }
+    public Page<Book> getBooks(
+        @RequestParam(required = false) String keyword,
+        Pageable pageable
+    ) {
+            return bookService.getBooks(keyword, pageable);
+        }
 
     @GetMapping("/books/{id}")
     public Book getBook(@PathVariable Long id) {
