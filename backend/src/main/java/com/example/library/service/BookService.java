@@ -31,7 +31,9 @@ public class BookService {
         return bookRepository.save(book);
     }
 
-    public Page<Book> getBooks(Pageable pageable) {
+    public Page<Book> getBooks(String keyword, Pageable pageable) {
+
+        // 정렬 조건이 없으면 id 오름차순을 기본값으로 사용
         if (pageable.getSort().isUnsorted()) {
             pageable = PageRequest.of(
                     pageable.getPageNumber(),
@@ -40,7 +42,17 @@ public class BookService {
             );
         }
 
-        return bookRepository.findAll(pageable);
+        // 검색어가 없으면 전체 조회
+        if (keyword == null || keyword.isBlank()) {
+            return bookRepository.findAll(pageable);
+        }
+
+        // 검색어가 있으면 제목 또는 저자 검색
+        return bookRepository.findByTitleContainingOrAuthorsContaining(
+                keyword,
+                keyword,
+                pageable
+        );
     }
 
     public Book getBook(Long id) {
