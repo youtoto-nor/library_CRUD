@@ -1,6 +1,7 @@
 import { BrowserRouter, Routes, Route, Link } from "react-router-dom";
 import BookList from "./features/books/BookList";
 import BookForm from "./features/books/BookForm";
+import Login from "./features/auth/Login";
 import "./App.css";
 
 function App() {
@@ -12,6 +13,7 @@ function App() {
             </nav>
 
             <Routes>
+                <Route path="/login" element={<Login />} />
                 <Route path="/books" element={<BookList />} />
                 <Route path="/books/new" element={<BookForm />} />
                 <Route path="/books/:id/edit" element={<BookForm />} />
