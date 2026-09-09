@@ -1,9 +1,343 @@
 .book-list {
-    padding: 20px;
+    max-width: 850px;
+    margin: 0 auto;
+    padding: 50px 30px;
 }
 
-.book-item {
-    margin-bottom: 20px;
-    padding: 15px;
+.book-list h1 {
+    margin: 0 0 30px;
+    font-size: 30px;
+    font-weight: 700;
+}
+
+
+/* 검색 */
+
+.search-box {
+    display: flex;
+    width: 100%;
+    max-width: 600px;
+    margin: 0 auto 35px;
+}
+
+.search-box input {
+    flex: 1;
+    padding: 15px 18px;
+
     border: 1px solid #ddd;
+    border-right: none;
+    border-radius: 10px 0 0 10px;
+
+    font-size: 15px;
+}
+
+.search-box input:focus {
+    outline: none;
+    border-color: #999;
+}
+
+.search-box button {
+    padding: 0 28px;
+
+    border: none;
+    border-radius: 0 10px 10px 0;
+
+    background: #222;
+    color: white;
+
+    font-size: 15px;
+    font-weight: 600;
+
+    cursor: pointer;
+}
+
+.search-box button:hover {
+    background: #444;
+}
+
+
+/* 도서 목록 */
+
+.book-grid {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+
+/* 도서 카드 */
+
+.book-item {
+    display: flex;
+    gap: 22px;
+    padding: 20px;
+    border: 1px solid #e5e5e5;
+    border-radius: 12px;
+    background: white;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.book-item:hover {
+    transform: translateY(-3px);
+
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.08);
+}
+
+
+/* 책 표지 */
+
+.book-thumbnail {
+    flex-shrink: 0;
+    width: 110px;
+    height: 158px;
+    overflow: hidden;
+    border-radius: 5px;
+    background: #f3f3f3;
+}
+
+.book-thumbnail img {
+    width: 100%;
+    height: 100%;
+
+    object-fit: cover;
+}
+
+
+/* 도서 정보 */
+
+.book-title,
+.book-author,
+.book-publisher,
+.book-isbn {
+    text-align: left;
+}
+
+.book-info {
+    flex: 1;
+    min-width: 0;
+    display: flex;
+    flex-direction: column;
+}
+
+.book-title {
+    margin: 0 0 7px;
+    font-size: 19px;
+    line-height: 1.4;
+}
+
+.book-author {
+    margin: 0 0 3px;
+    font-size: 14px;
+    font-weight: 600;
+}
+
+.book-publisher {
+    margin: 0;
+    color: #777;
+    font-size: 13px;
+}
+
+.book-price {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    margin-top: 18px;
+    text-align: left;
+    margin-bottom: 8px;
+}
+
+.book-price > div {
+    display: flex;
+    align-items: center;
+    margin-bottom: 5px;
+}
+
+.price-label {
+    width: 50px;
+    color: #888;
+    font-size: 13px;
+}
+
+.original-price {
+    color: #888;
+    font-size: 13px;
+}
+
+.book-price strong {
+    font-size: 17px;
+}
+
+/* ISBN */
+
+.book-isbn {
+    margin: 12px 0 0;
+    text-align: left;
+    color: #888;
+    font-size: 13px;
+}
+
+
+/* 버튼 */
+
+.book-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 8px;
+    margin-top: 15px;
+}
+.book-actions a,
+.book-actions button {
+    padding: 8px 16px;
+
+    border-radius: 6px;
+
+    font-size: 14px;
+    cursor: pointer;
+}
+
+.book-actions a {
+    border: 1px solid #ddd;
+
+    background: white;
+    color: #333;
+
+    text-decoration: none;
+}
+
+.book-actions a:hover {
+    background: #f5f5f5;
+}
+
+.book-actions button {
+    border: none;
+
+    background: #333;
+    color: white;
+}
+
+.book-actions button:hover {
+    background: #555;
+}
+
+
+/* 검색 결과 없음 */
+
+.empty-message {
+    padding: 60px 0;
+
+    color: #888;
+    text-align: center;
+}
+
+
+/* 페이지네이션 */
+
+.pagination {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    gap: 6px;
+    margin-top: 45px;
+}
+
+.pagination button {
+    min-width: 38px;
+    height: 38px;
+
+    border: 1px solid #ddd;
+    border-radius: 6px;
+
+    background: white;
+
+    cursor: pointer;
+}
+
+.pagination button:hover:not(:disabled) {
+    background: #f3f3f3;
+}
+
+.pagination button.active {
+    background: #222;
+    color: white;
+}
+
+.pagination button:disabled {
+    color: #aaa;
+    background: #f7f7f7;
+    cursor: default;
+}
+
+.success-message {
+    position: fixed;
+    top: 85px;
+    left: 50%;
+    transform: translateX(-50%);
+
+    width: min(420px, calc(100% - 40px));
+
+    overflow: hidden;
+    border: 1px solid #d8eadc;
+    border-radius: 10px;
+    background: #f4faf5;
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.12);
+
+    z-index: 1000;
+}
+.success-content {
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+    padding: 18px 20px;
+}
+
+.success-icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+    background: #2f7d46;
+    color: white;
+    font-size: 14px;
+    font-weight: 700;
+}
+
+.success-content strong {
+    display: block;
+    margin-bottom: 4px;
+    color: #285f36;
+    font-size: 15px;
+}
+
+.success-content p {
+    margin: 0;
+    color: #6d8071;
+    font-size: 13px;
+}
+
+.success-progress {
+    width: 100%;
+    height: 3px;
+    background: #dceee0;
+}
+
+.success-progress-bar {
+    width: 100%;
+    height: 100%;
+    background: #2f7d46;
+    transform-origin: left;
+    animation: success-progress 3s linear forwards;
+}
+
+@keyframes success-progress {
+    from {
+        transform: scaleX(1);
+    }
+
+    to {
+        transform: scaleX(0);
+    }
 }
