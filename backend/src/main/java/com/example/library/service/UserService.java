@@ -2,6 +2,7 @@ package com.example.library.service;
 
 import com.example.library.config.JwtTokenProvider;
 import com.example.library.dto.LoginRequest;
+import com.example.library.dto.MeResponse;
 import com.example.library.dto.SignupRequest;
 import com.example.library.entity.User;
 import com.example.library.repository.UserRepository;
@@ -47,5 +48,20 @@ public class UserService {
         }
 
         return jwtTokenProvider.createToken(user);
+    }
+    public MeResponse getMe(String token) {
+
+        String email = jwtTokenProvider.getEmail(token);
+
+        User user = userRepository.findByEmail(email)
+                .orElseThrow(() -> new RuntimeException("사용자를 찾을 수 없습니다."));
+
+        return new MeResponse(
+                user.getId(),
+                user.getEmail(),
+                user.getName(),
+                user.getRole(),
+                user.getCreatedAt()
+        );
     }
 }
