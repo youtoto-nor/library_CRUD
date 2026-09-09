@@ -4,6 +4,7 @@ import com.example.library.dto.MeResponse;
 import com.example.library.dto.LoginRequest;
 import com.example.library.dto.SignupRequest;
 import com.example.library.service.UserService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
@@ -15,7 +16,7 @@ public class AuthController {
     private final UserService userService;
 
     @PostMapping("/signup")
-    public void signup(@RequestBody SignupRequest request) {
+    public void signup(@Valid @RequestBody SignupRequest request) {
         userService.signup(request);
     }
 
