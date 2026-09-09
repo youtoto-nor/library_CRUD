@@ -1,5 +1,7 @@
 package com.example.library.config;
 
+import org.springframework.security.web.authentication.HttpStatusEntryPoint;
+import org.springframework.http.HttpStatus;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
@@ -34,12 +36,9 @@ public class SecurityConfig {
                         .anyRequest().authenticated()
                 )
                 .exceptionHandling(exception -> exception
-                        .accessDeniedHandler((request, response, accessDeniedException) -> {
-                            System.out.println("403 발생");
-                            System.out.println("요청 경로: " + request.getRequestURI());
-                            System.out.println("인증 정보: " + SecurityContextHolder.getContext().getAuthentication());
-                            System.out.println("403 이유: " + accessDeniedException.getMessage());
-                        })
+                        .authenticationEntryPoint(
+                                new HttpStatusEntryPoint(HttpStatus.UNAUTHORIZED)
+                        )
                 )
                 .addFilterBefore(
                         new JwtAuthenticationFilter(jwtTokenProvider),
