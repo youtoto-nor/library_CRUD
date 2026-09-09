@@ -10,6 +10,7 @@ import java.util.List;
 
 
 @RestController
+@RequestMapping("/api")
 public class BookController {
 
     private final BookService bookService;
@@ -33,6 +34,8 @@ public class BookController {
 
     @PostMapping("/books")
         public Book createBook(@RequestBody BookRequest request) {
+
+        System.out.println("BookController createBook 실행");
             return bookService.createBook(request);
     }
 
