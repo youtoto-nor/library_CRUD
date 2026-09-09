@@ -1,0 +1,115 @@
+.notification {
+    position: fixed;
+    top: 85px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: min(420px, calc(100% - 40px));
+    overflow: hidden;
+    border-radius: 10px;
+    background: white;
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.12);
+    z-index: 1000;
+}
+
+.notification.success {
+    border: 1px solid #d8eadc;
+    background: #f4faf5;
+}
+
+.notification.error {
+    border: 1px solid #ead8d8;
+    background: #fff7f7;
+}
+
+.notification-content {
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+    padding: 18px 20px;
+}
+
+.notification-icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+    color: white;
+    font-size: 14px;
+    font-weight: 700;
+}
+
+.notification.success .notification-icon {
+    background: #2f7d46;
+}
+
+.notification.error .notification-icon {
+    background: #b94a48;
+}
+
+.notification-content strong {
+    display: block;
+    margin-bottom: 4px;
+    font-size: 15px;
+}
+
+.notification.success strong {
+    color: #285f36;
+}
+
+.notification.error strong {
+    color: #8f3735;
+}
+
+.notification-content p {
+    margin: 0;
+    font-size: 13px;
+}
+
+.notification.success p {
+    color: #6d8071;
+}
+
+.notification.error p {
+    color: #8a7777;
+}
+
+.notification-progress {
+    width: 100%;
+    height: 3px;
+}
+
+.notification.success .notification-progress {
+    background: #dceee0;
+}
+
+.notification.error .notification-progress {
+    background: #f0dddd;
+}
+
+.notification-progress-bar {
+    width: 100%;
+    height: 100%;
+    transform-origin: left;
+    animation: notification-progress 3s linear forwards;
+}
+
+.notification.success .notification-progress-bar {
+    background: #2f7d46;
+}
+
+.notification.error .notification-progress-bar {
+    background: #b94a48;
+}
+
+@keyframes notification-progress {
+    from {
+        transform: scaleX(1);
+    }
+
+    to {
+        transform: scaleX(0);
+    }
+}

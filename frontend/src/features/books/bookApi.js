@@ -1,9 +1,7 @@
 import api from '../../api/axios';
 
-const API_URL = 'http://localhost:8080/books';
-
 export const getBooks = (page = 0, size = 20, keyword = '') => {
-    return axios.get(API_URL, {
+    return api.get('/api/books', {
         params: {
             page,
             size,
@@ -13,17 +11,17 @@ export const getBooks = (page = 0, size = 20, keyword = '') => {
 };
 
 export const getBook = (id) => {
-    return api.get(`/books/${id}`);
+    return api.get(`/api/books/${id}`);
 };
 
 export const createBook = (book) => {
-    return api.post('/books', book);
+    return api.post('/api/books', book);
 };
 
 export const updateBook = (id, book) => {
-    return api.put(`/books/${id}`, book);
+    return api.put(`/api/books/${id}`, book);
 };
 
 export const deleteBook = (id) => {
-    return api.delete(`/books/${id}`);
+    return api.delete(`/api/books/${id}`);
 };
