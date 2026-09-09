@@ -52,11 +52,6 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
                         "인증 객체: "
                                 + SecurityContextHolder.getContext().getAuthentication()
                 );
-                System.out.println(
-                        "다음 필터로 전달 직전: "
-                                + SecurityContextHolder.getContext().getAuthentication()
-                );
-
             } else {
 
                 System.out.println("JWT 검증 실패");
