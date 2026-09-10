@@ -51,4 +51,12 @@ public class AuthController {
                 .badRequest()
                 .body(Map.of("message", message));
     }
+    @ExceptionHandler(RuntimeException.class)
+    public ResponseEntity<Map<String, String>> handleRuntimeException(
+            RuntimeException exception
+    ) {
+        return ResponseEntity
+                .badRequest()
+                .body(Map.of("message", exception.getMessage()));
+    }
 }
