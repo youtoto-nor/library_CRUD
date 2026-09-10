@@ -1,11 +1,13 @@
 import { useEffect, useState } from "react";
-import { Link, useLocation } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import { getBooks, deleteBook } from "./bookApi";
 import Notification from "../components/Notification";
+import { getMe } from "../auth/authApi";
 import "./BookList.css";
 
 function BookList() {
     const [books, setBooks] = useState([]);
+    const [user, setUser] = useState(null);
     const [status, setStatus] = useState("idle");
     const [page, setPage] = useState(0);
     const [totalPages, setTotalPages] = useState(0);
@@ -13,10 +15,38 @@ function BookList() {
     const [searchKeyword, setSearchKeyword] = useState("");
 
     const location = useLocation();
+    const navigate = useNavigate();
     const [notification, setNotification] = useState(null);
     const [successMessage, setSuccessMessage] = useState(
         location.state?.message || ""
     );
+useEffect(() => {
+    const loadUser = () => {
+        const token = localStorage.getItem("token");
+
+        if (!token) {
+            setUser(null);
+            return;
+        }
+
+        getMe()
+            .then((response) => {
+                setUser(response.data);
+            })
+            .catch(() => {
+                localStorage.removeItem("token");
+                setUser(null);
+            });
+    };
+
+    loadUser();
+
+    window.addEventListener("auth-change", loadUser);
+
+    return () => {
+        window.removeEventListener("auth-change", loadUser);
+    };
+}, []);
     useEffect(() => {
         if (!successMessage) {
             return;
@@ -32,6 +62,9 @@ function BookList() {
     }, [successMessage]);
 
     const handleDelete = (id) => {
+        if (!window.confirm("정말 이 도서를 삭제하시겠습니까?")) {
+            return;
+        }
         deleteBook(id)
             .then(() => {
                 setNotification({
@@ -190,6 +223,7 @@ function BookList() {
                                     ISBN {book.isbn}
                                 </p>
 
+                            {user && (
                                 <div className="book-actions">
                                     <Link to={`/books/${book.id}/edit`}>
                                         수정
@@ -201,7 +235,7 @@ function BookList() {
                                         삭제
                                     </button>
                                 </div>
-
+                            )}
                             </div>
                         </div>
                     ))}

@@ -30,7 +30,8 @@ function Signup() {
             .catch(() => {
                 setNotification({
                     type: "error",
-                    message: "회원가입에 실패했습니다."
+                    message: error.response?.data?.message ||
+                    "회원가입에 실패했습니다."
                 });
             });
     };
