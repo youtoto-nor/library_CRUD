@@ -1,11 +1,12 @@
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { getMe } from "../auth/authApi";
+import Notification from "../components/Notification";
 import "./Header.css";
 
 function Header() {
     const [user, setUser] = useState(null);
-
+    const [notification, setNotification] = useState(null);
     const loadUser = () => {
         const token = localStorage.getItem("token");
 
@@ -27,10 +28,19 @@ function Header() {
     useEffect(() => {
         loadUser();
 
+        const handleAuthExpired = () => {
+            setNotification({
+                type: "error",
+                message: "로그인이 만료되었습니다."
+            });
+        };
+
         window.addEventListener("auth-change", loadUser);
+        window.addEventListener("auth-expired", handleAuthExpired);
 
         return () => {
             window.removeEventListener("auth-change", loadUser);
+            window.removeEventListener("auth-expired", handleAuthExpired);
         };
     }, []);
 
@@ -42,6 +52,13 @@ function Header() {
     };
 
     return (
+    <>
+        <Notification
+            type={notification?.type}
+            message={notification?.message}
+            persistent={true}
+            onClose={() => setNotification(null)}
+        />
         <header className="app-header">
             <div className="header-inner">
 
@@ -77,6 +94,7 @@ function Header() {
 
             </div>
         </header>
+    </>
     );
 }
 

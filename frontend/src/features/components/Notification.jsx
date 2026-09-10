@@ -1,7 +1,12 @@
 import { useEffect, useState } from "react";
 import "./Notification.css";
 
-function Notification({ type = "success", message }) {
+function Notification({
+    type = "success",
+    message,
+    persistent = false,
+    onClose
+}) {
     const [visible, setVisible] = useState(false);
 
     useEffect(() => {
@@ -12,6 +17,7 @@ function Notification({ type = "success", message }) {
 
         setVisible(true);
 
+    if (!persistent) {
         const timer = setTimeout(() => {
             setVisible(false);
         }, 3000);
@@ -19,6 +25,7 @@ function Notification({ type = "success", message }) {
         return () => {
             clearTimeout(timer);
         };
+    }
     }, [message]);
 
     if (!visible || !message) {
@@ -43,7 +50,18 @@ function Notification({ type = "success", message }) {
                     </p>
                 </div>
             </div>
-
+        {persistent && (
+            <button
+                type="button"
+                className="notification-close"
+                onClick={() => {
+                    setVisible(false);
+                    onClose?.();
+                }}
+            >
+                ×
+            </button>
+        )}
             <div className="notification-progress">
                 <div className="notification-progress-bar"></div>
             </div>

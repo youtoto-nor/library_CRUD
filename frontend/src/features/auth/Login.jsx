@@ -19,7 +19,9 @@ function Login() {
                 password
             });
 
-            localStorage.setItem('token', response.data);
+            const token = response.data;
+
+            localStorage.setItem("token", token);
 
             window.dispatchEvent(new Event("auth-change"));
 
