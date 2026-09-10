@@ -16,10 +16,11 @@ function BookList() {
 
     const location = useLocation();
     const navigate = useNavigate();
-    const [notification, setNotification] = useState(null);
-    const [successMessage, setSuccessMessage] = useState(
-        location.state?.message || ""
-    );
+    const [notification, setNotification] = useState(() => ({
+        type: location.state?.message ? "success" : null,
+        message: location.state?.message || null
+    }));
+
 useEffect(() => {
     const loadUser = () => {
         const token = localStorage.getItem("token");
@@ -47,20 +48,7 @@ useEffect(() => {
         window.removeEventListener("auth-change", loadUser);
     };
 }, []);
-    useEffect(() => {
-        if (!successMessage) {
-            return;
-        }
-
-        const timer = setTimeout(() => {
-            setSuccessMessage("");
-        }, 3000);
-
-        return () => {
-            clearTimeout(timer);
-        };
-    }, [successMessage]);
-
+    
     const handleDelete = (id) => {
         if (!window.confirm("정말 이 도서를 삭제하시겠습니까?")) {
             return;
@@ -108,6 +96,8 @@ useEffect(() => {
     useEffect(() => {
         setStatus("loading");
 
+        window.scrollTo(0, 0);
+
         getBooks(page, 20, searchKeyword)
             .then((response) => {
                 setBooks(response.data.content);
@@ -125,158 +115,143 @@ useEffect(() => {
     const endPage = Math.min(startPage + 4, totalPages);
 
     return (
-        <div className="book-list">
-            <h1>도서 목록</h1>
-            <Notification
-                type={notification?.type}
-                message={notification?.message}
-            />
-            {successMessage && (
-                <div className="success-message">
-                    <div className="success-content">
-                        <span className="success-icon">✓</span>
+        <div className="book-page">
+            <div className="book-list">
+                <h1>도서 목록</h1>
+                <Notification
+                    type={notification?.type}
+                    message={notification?.message}
+                />
+                
+                <div className="search-box">
+                    <input
+                        type="text"
+                        value={keyword}
+                        onChange={(e) => setKeyword(e.target.value)}
+                        onKeyDown={(e) => {
+                            if (e.key === "Enter") {
+                                setSearchKeyword(keyword);
+                                setPage(0);
+                            }
+                        }}
+                        placeholder="도서 제목 또는 저자 검색"
+                    />
 
-                        <div>
-                            <strong>{successMessage}</strong>
-                            <p>
-                                작업이 정상적으로 완료되었습니다.
-                            </p>
-                        </div>
-                    </div>
-
-                    <div className="success-progress">
-                        <div className="success-progress-bar"></div>
-                    </div>
-                </div>
-            )}
-            <div className="search-box">
-                <input
-                    type="text"
-                    value={keyword}
-                    onChange={(e) => setKeyword(e.target.value)}
-                    onKeyDown={(e) => {
-                        if (e.key === "Enter") {
+                    <button
+                        onClick={() => {
                             setSearchKeyword(keyword);
                             setPage(0);
-                        }
-                    }}
-                    placeholder="도서 제목 또는 저자 검색"
-                />
-
-                <button
-                    onClick={() => {
-                        setSearchKeyword(keyword);
-                        setPage(0);
-                    }}
-                >
-                    검색
-                </button>
-            </div>
-
-            {books.length === 0 ? (
-                <p className="empty-message">검색 결과가 없습니다.</p>
-            ) : (
-                <div className="book-grid">
-                    {books.map((book) => (
-                        <div className="book-item" key={book.id}>
-
-                            {book.thumbnail && (
-                                <div className="book-thumbnail">
-                                    <img
-                                        src={book.thumbnail}
-                                        alt={book.title}
-                                    />
-                                </div>
-                            )}
-
-                            <div className="book-info">
-
-                                <h2 className="book-title">
-                                    {book.title}
-                                </h2>
-
-                                <p className="book-author">
-                                    {book.authors}
-                                </p>
-
-                                <p className="book-publisher">
-                                    {book.publisher}
-                                </p>
-
-                                <div className="book-price">
-                                    <div>
-                                        <span className="price-label">정가</span>
-                                        <span className="original-price">
-                                            {book.price?.toLocaleString()}원
-                                        </span>
-                                    </div>
-
-                                    <div>
-                                        <span className="price-label">판매가</span>
-                                        <strong>
-                                            {book.salePrice?.toLocaleString()}원
-                                        </strong>
-                                    </div>
-                                </div>
-
-                                <p className="book-isbn">
-                                    ISBN {book.isbn}
-                                </p>
-
-                            {user && (
-                                <div className="book-actions">
-                                    <Link to={`/books/${book.id}/edit`}>
-                                        수정
-                                    </Link>
-
-                                    <button
-                                        onClick={() => handleDelete(book.id)}
-                                    >
-                                        삭제
-                                    </button>
-                                </div>
-                            )}
-                            </div>
-                        </div>
-                    ))}
+                        }}
+                    >
+                        검색
+                    </button>
                 </div>
-            )}
 
-            <div className="pagination">
-                <button
-                    onClick={() => setPage(startPage - 2)}
-                    disabled={startPage === 1}
-                >
-                    이전
-                </button>
+                {books.length === 0 ? (
+                    <p className="empty-message">검색 결과가 없습니다.</p>
+                ) : (
+                    <div className="book-grid">
+                        {books.map((book) => (
+                            <div className="book-item" key={book.id}>
 
-                {Array.from(
-                    { length: endPage - startPage + 1 },
-                    (_, index) => {
-                        const pageNumber = startPage + index;
+                                {book.thumbnail && (
+                                    <div className="book-thumbnail">
+                                        <img
+                                            src={book.thumbnail}
+                                            alt={book.title}
+                                        />
+                                    </div>
+                                )}
 
-                        return (
-                            <button
-                                key={pageNumber}
-                                onClick={() => setPage(pageNumber - 1)}
-                                className={
-                                    pageNumber === currentPage
-                                        ? "active"
-                                        : ""
-                                }
-                            >
-                                {pageNumber}
-                            </button>
-                        );
-                    }
+                                <div className="book-info">
+
+                                    <h2 className="book-title">
+                                        {book.title}
+                                    </h2>
+
+                                    <p className="book-author">
+                                        {book.authors}
+                                    </p>
+
+                                    <p className="book-publisher">
+                                        {book.publisher}
+                                    </p>
+
+                                    <div className="book-price">
+                                        <div>
+                                            <span className="price-label">정가</span>
+                                            <span className="original-price">
+                                                {book.price?.toLocaleString()}원
+                                            </span>
+                                        </div>
+
+                                        <div>
+                                            <span className="price-label">판매가</span>
+                                            <strong>
+                                                {book.salePrice?.toLocaleString()}원
+                                            </strong>
+                                        </div>
+                                    </div>
+
+                                    <p className="book-isbn">
+                                        ISBN {book.isbn}
+                                    </p>
+
+                                {user && (
+                                    <div className="book-actions">
+                                        <Link to={`/books/${book.id}/edit`}>
+                                            수정
+                                        </Link>
+
+                                        <button
+                                            onClick={() => handleDelete(book.id)}
+                                        >
+                                            삭제
+                                        </button>
+                                    </div>
+                                )}
+                                </div>
+                            </div>
+                        ))}
+                    </div>
                 )}
 
-                <button
-                    onClick={() => setPage(endPage)}
-                    disabled={endPage === totalPages}
-                >
-                    다음
-                </button>
+                <div className="pagination">
+                    <button
+                        onClick={() => setPage(startPage - 2)}
+                        disabled={startPage === 1}
+                    >
+                        이전
+                    </button>
+
+                    {Array.from(
+                        { length: endPage - startPage + 1 },
+                        (_, index) => {
+                            const pageNumber = startPage + index;
+
+                            return (
+                                <button
+                                    key={pageNumber}
+                                    onClick={() => setPage(pageNumber - 1)}
+                                    className={
+                                        pageNumber === currentPage
+                                            ? "active"
+                                            : ""
+                                    }
+                                >
+                                    {pageNumber}
+                                </button>
+                            );
+                        }
+                    )}
+
+                    <button
+                        onClick={() => setPage(endPage)}
+                        disabled={endPage === totalPages}
+                    >
+                        다음
+                    </button>
+                </div>
             </div>
         </div>
     );

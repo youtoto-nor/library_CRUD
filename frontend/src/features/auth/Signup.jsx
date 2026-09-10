@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 import { signup } from "./authApi";
 import Notification from "../components/Notification";
 import "./Signup.css";
@@ -9,7 +9,7 @@ function Signup() {
     const [password, setPassword] = useState("");
     const [name, setName] = useState("");
     const [notification, setNotification] = useState(null);
-
+    const [showPassword, setShowPassword] = useState(false);
     const navigate = useNavigate();
 
     const handleSubmit = (event) => {
@@ -50,36 +50,44 @@ function Signup() {
 
             <form onSubmit={handleSubmit}>
                 <div className="form-group">
-                    <label>이메일</label>
-                    <input
-                        type="email"
-                        value={email}
-                        onChange={(event) => setEmail(event.target.value)}
-                        placeholder="이메일을 입력하세요."
-                        required
-                    />
-                </div>
-
-                <div className="form-group">
-                    <label>비밀번호</label>
-                    <input
-                        type="password"
-                        value={password}
-                        onChange={(event) => setPassword(event.target.value)}
-                        placeholder="비밀번호를 입력하세요."
-                        required
-                    />
-                </div>
-
-                <div className="form-group">
-                    <label>이름</label>
                     <input
                         type="text"
+                        name="name"
                         value={name}
-                        onChange={(event) => setName(event.target.value)}
-                        placeholder="이름을 입력하세요."
-                        required
+                        onChange={(e) => setName(e.target.value)}
+                        placeholder="이름"
+                        aria-label="이름"
                     />
+                </div>
+
+                <div className="form-group">
+                    <input
+                        type="email"
+                        name="email"
+                        value={email}
+                        onChange={(e) => setEmail(e.target.value)}
+                        placeholder="이메일"
+                        aria-label="이메일"
+                    />
+                </div>
+
+                <div className="form-group">
+                    <div className="password-input">
+                        <input
+                            type={showPassword ? "text" : "password"}
+                            name="password"
+                            value={password}
+                            onChange={(e) => setPassword(e.target.value)}
+                            placeholder="비밀번호"
+                            aria-label="비밀번호"
+                        />
+                        <button
+                            type="button"
+                            onClick={() => setShowPassword(!showPassword)}
+                        >
+                            {showPassword ? "숨기기" : "보기"}
+                        </button>
+                    </div>
                 </div>
 
                 <div className="form-actions">
