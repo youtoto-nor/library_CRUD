@@ -51,8 +51,9 @@ function Header() {
 
                 <nav className="main-nav">
                     <Link to="/books">도서 목록</Link>
+                    {user && (
                     <Link to="/books/new">도서 등록</Link>
-
+                    )}
                     {user ? (
                         <>
                             <span className="user-name">
