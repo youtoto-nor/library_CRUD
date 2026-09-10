@@ -27,7 +27,7 @@ function Signup() {
                     }
                 });
             })
-            .catch(() => {
+            .catch((error) => {
                 setNotification({
                     type: "error",
                     message: error.response?.data?.message ||
