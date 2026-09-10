@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import Notification from "../components/Notification";
+import { getMe } from "../auth/authApi";
 import {
     createBook,
     getBook,
@@ -39,6 +40,20 @@ function BookForm() {
                 });
         }
     }, [id]);
+
+    useEffect(() => {
+    const token = localStorage.getItem("token");
+
+    if (!token) {
+        navigate("/login");
+        return;
+    }
+
+    getMe().catch(() => {
+        localStorage.removeItem("token");
+        navigate("/login");
+    });
+}, [navigate]);
 
     const handleChange = (event) => {
         const { name, value } = event.target;
