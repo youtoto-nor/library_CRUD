@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, Link } from 'react-router-dom';
 import { login } from './authApi';
 import Notification from "../components/Notification";
 import "./Login.css";
@@ -8,6 +8,7 @@ function Login() {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [notification, setNotification] = useState(null);
+    const [showPassword, setShowPassword] = useState(false);
     const navigate = useNavigate();
 
     const handleSubmit = async (event) => {
@@ -33,7 +34,9 @@ function Login() {
         } catch (error) {
             setNotification({
                 type: "error",
-                message: "로그인에 실패했습니다."
+                message:
+                    error.response?.data?.message ||
+                    "로그인에 실패했습니다."
             });
         }
     };
@@ -46,31 +49,49 @@ function Login() {
                 type={notification?.type}
                 message={notification?.message}
             />
+            <p className="login-description">
+                이메일과 비밀번호로 로그인해주세요.
+            </p>
             <form onSubmit={handleSubmit}>
                 <div className="form-group">
-                    <label>이메일</label>
-                    <input
-                        type="email"
-                        value={email}
-                        onChange={(event) => setEmail(event.target.value)}
-                        placeholder="이메일을 입력하세요."
-                    />
-                </div>
+                <input
+                    type="email"
+                    name="email"
+                    value={email}
+                    onChange={(e) => setEmail(e.target.value)}
+                    placeholder="이메일"
+                    aria-label="이메일"
+                />
+            </div>
 
-                <div className="form-group">
-                    <label>비밀번호</label>
+        
+            <div className="form-group">
+                <div className="password-input">
                     <input
-                        type="password"
+                        type={showPassword ? "text" : "password"}
+                        name="password"
                         value={password}
-                        onChange={(event) => setPassword(event.target.value)}
-                        placeholder="비밀번호를 입력하세요."
+                        onChange={(e) => setPassword(e.target.value)}
+                        placeholder="비밀번호"
+                        aria-label="비밀번호"
                     />
-                </div>
 
+                    <button
+                        type="button"
+                        onClick={() => setShowPassword(!showPassword)}
+                    >
+                        {showPassword ? "숨기기" : "보기"}
+                    </button>
+                </div>
+            </div>
                 <button type="submit">
                     로그인
                 </button>
             </form>
+            <p className="login-signup">
+                아직 계정이 없으신가요?
+                <Link to="/signup">회원가입</Link>
+            </p>
         </div>
     );
 }

@@ -63,7 +63,8 @@ function Header() {
             <div className="header-inner">
 
                 <Link to="/books" className="logo">
-                    📚 미니 사서
+                    <strong>BMS</strong>
+                    <span>도서 관리 시스템</span>
                 </Link>
 
                 <nav className="main-nav">
